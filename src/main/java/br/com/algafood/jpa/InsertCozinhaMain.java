@@ -1,13 +1,12 @@
 package br.com.algafood.jpa;
 
-import java.util.List;
-
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 
 import br.com.algafood.AlgafoodApiApplication;
 import br.com.algafood.model.Cozinha;
+import br.com.algafood.repository.CozinhaRepository;
 
 public class InsertCozinhaMain {
 	
@@ -16,12 +15,12 @@ public class InsertCozinhaMain {
 		ApplicationContext applicationContext = new SpringApplicationBuilder(AlgafoodApiApplication.class)
 				.web(WebApplicationType.NONE).run(args);
 		
-		CadastroCozinha cadastroCozinha = applicationContext.getBean(CadastroCozinha.class);
+		CozinhaRepository cozinhaRepository = applicationContext.getBean(CozinhaRepository.class);
 		
 		Cozinha cozinha1 = new Cozinha();
 		cozinha1.setNome("Italiana");
 		
-		cadastroCozinha.cozinhaSalva(cozinha1);
+		cozinhaRepository.cozinhaSalva(cozinha1);
                
 	}
 	
