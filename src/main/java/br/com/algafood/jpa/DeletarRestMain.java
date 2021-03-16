@@ -8,7 +8,7 @@ import br.com.algafood.AlgafoodApiApplication;
 import br.com.algafood.model.Restaurante;
 import br.com.algafood.repository.RestauranteRepository;
 
-public class BuscaPorIdCozinhaMain {
+public class DeletarRestMain {
 	
 	public static void main(String[] args) {
 		
@@ -17,11 +17,11 @@ public class BuscaPorIdCozinhaMain {
 		
 		RestauranteRepository restauranteRepository = applicationContext.getBean(RestauranteRepository.class);
 		
-		Restaurante restaurante = restauranteRepository.buscarPorId(1L);
-		
-		
-		 System.out.println(restaurante.getNome());
+                Restaurante restaurante= restauranteRepository.buscarPorId(1L);
+                
                
+                
+                restauranteRepository.deletar(restaurante);
 	}
 	
 

@@ -5,8 +5,8 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 
 import br.com.algafood.AlgafoodApiApplication;
-import br.com.algafood.model.Cozinha;
-import br.com.algafood.repository.CozinhaRepository;
+import br.com.algafood.model.Restaurante;
+import br.com.algafood.repository.RestauranteRepository;
 
 public class InsertCozinhaMain {
 	
@@ -15,12 +15,12 @@ public class InsertCozinhaMain {
 		ApplicationContext applicationContext = new SpringApplicationBuilder(AlgafoodApiApplication.class)
 				.web(WebApplicationType.NONE).run(args);
 		
-		CozinhaRepository cozinhaRepository = applicationContext.getBean(CozinhaRepository.class);
+		RestauranteRepository restauranteRepository = applicationContext.getBean(RestauranteRepository.class);
 		
-		Cozinha cozinha1 = new Cozinha();
-		cozinha1.setNome("Italiana");
+		Restaurante restaurante = new Restaurante();
+		restaurante.setNome("RestNovo");
 		
-		cozinhaRepository.cozinhaSalva(cozinha1);
+		restauranteRepository.salvar(restaurante);
                
 	}
 	
