@@ -7,7 +7,7 @@ import br.com.algafood.model.Restaurante;
 public interface RestauranteRepository {
 	
 	List<Restaurante> listar();
-	void deletar(Restaurante restaurante);
+	void deletar(Long id);
 	public Restaurante salvar(Restaurante restaurante);
 	public Restaurante buscarPorId(Long id);
 

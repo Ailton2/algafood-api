@@ -4,11 +4,16 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
 import br.com.algafood.model.Restaurante;
 
+@Repository
 public class RestauranteRepositoryImpl implements RestauranteRepository {
 
 	
+	@Autowired
 	 private EntityManager manager;
 	
 	@Override
@@ -18,8 +23,8 @@ public class RestauranteRepositoryImpl implements RestauranteRepository {
 	}
 
 	@Override
-	public void deletar(Restaurante restaurante) {
-		 manager.remove(restaurante);
+	public void deletar(Long id) {
+		 manager.remove(id);
 		
 	}
 
