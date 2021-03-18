@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.algafood.exception.EntidadeEmUsoException;
 import br.com.algafood.exception.EntidadeNaoEncontradaException;
 import br.com.algafood.model.Cozinha;
+import br.com.algafood.repository.CozinhaRepository;
 import br.com.algafood.service.CozinhaService;
 
 
@@ -30,6 +31,9 @@ public class CozinhaController {
 	
 	@Autowired
 	private CozinhaService cozinhaService;
+	
+	@Autowired
+	private CozinhaRepository cozinhaRepository;
 	
 	@GetMapping
 	public List<Cozinha> listar(){

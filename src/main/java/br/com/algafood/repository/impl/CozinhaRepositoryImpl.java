@@ -1,4 +1,4 @@
-package br.com.algafood.repository;
+package br.com.algafood.repository.impl;
 
 import java.util.List;
 
@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.algafood.model.Cozinha;
+import br.com.algafood.repository.CozinhaRepository;
 
 @Component
 public class CozinhaRepositoryImpl implements CozinhaRepository {

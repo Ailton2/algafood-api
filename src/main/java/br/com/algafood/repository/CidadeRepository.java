@@ -2,13 +2,14 @@ package br.com.algafood.repository;
 
 import java.util.List;
 
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+
 import br.com.algafood.model.Cidade;
 
-public interface CidadeRepository {
+@Repository
+public interface CidadeRepository  extends CrudRepository<Cidade, Long> {
 	
-	public List<Cidade> listar();
-	public Cidade salvar(Cidade cidade);
-	public Cidade BuscarPorId(Long id);
-	public void deletar(Long id);
+
 
 }

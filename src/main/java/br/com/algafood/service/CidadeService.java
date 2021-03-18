@@ -1,6 +1,7 @@
 package br.com.algafood.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,7 @@ public class CidadeService {
 	
 	public List<Cidade> listar() {
 		
-		List<Cidade> cidades = cidadeRepository.listar();
+		List<Cidade> cidades = (List<Cidade>) cidadeRepository.findAll();
 		
 		return cidades;
 		
@@ -24,19 +25,20 @@ public class CidadeService {
 	
 	public Cidade BuscarPorId(Long id) {
 		
-		Cidade cidade = cidadeRepository.BuscarPorId(id);
+		 Optional<Cidade> cidade = cidadeRepository.findById(id);
+	
 		
-		return cidade;
+		return cidade.get();
 	}
 	
 	public Cidade salvar(Cidade cidade) {
 		
-	  return cidadeRepository.salvar(cidade);
+	  return cidadeRepository.save(cidade);
 	}
 	
 	public void deletar(Long id) {
 		
-		cidadeRepository.deletar(id);
+		cidadeRepository.deleteById(id);
 		
 	}
 

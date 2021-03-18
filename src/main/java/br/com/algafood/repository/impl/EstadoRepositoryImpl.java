@@ -1,4 +1,4 @@
-package br.com.algafood.repository;
+package br.com.algafood.repository.impl;
 
 import java.util.List;
 
@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.algafood.model.Estado;
+import br.com.algafood.repository.EstadoRepository;
 
 @Component
 public class EstadoRepositoryImpl implements EstadoRepository {

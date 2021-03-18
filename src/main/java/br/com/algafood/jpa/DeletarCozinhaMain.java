@@ -21,7 +21,7 @@ public class DeletarCozinhaMain {
                 cozinha.setId(1L);
                
                 
-                cozinhaRepository.deletar(cozinha);
+              //  cozinhaRepository.deletar(cozinha);
 	}
 	
 
