@@ -1,6 +1,7 @@
 package br.com.algafood.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -21,22 +22,22 @@ public class RestauranteService {
 	
 	public List<Restaurante> listar(){
 		
-		return restauranteRepository.listar();
+		return (List<Restaurante>) restauranteRepository.findAll();
 	}
 	
 
 	
 	public Restaurante buscarPorId(Long id) {
 		
-		  Restaurante restaurante =	restauranteRepository.buscarPorId(id);
+		Optional<Restaurante> restaurante =	restauranteRepository.findById(id);
 		  
-		  return restaurante;
+		  return restaurante.get();
 			
 	}
 	
 	public void deletar(Long id) {
           try {
-        	  restauranteRepository.deletar(id);
+        	  restauranteRepository.deleteById(id);
   		} catch (EmptyResultDataAccessException e) {
 			throw new EntidadeNaoEncontradaException (
 				  String.format("Não existe cadastro de restaurante com o código %d ", id));
@@ -52,7 +53,7 @@ public class RestauranteService {
 	public Restaurante salvar(Restaurante restaurante) {
 		
 	
-		 return restauranteRepository.salvar(restaurante);
+		 return restauranteRepository.save(restaurante);
 
 	}
 

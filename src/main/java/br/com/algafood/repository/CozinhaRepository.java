@@ -2,14 +2,12 @@ package br.com.algafood.repository;
 
 import java.util.List;
 
+import org.springframework.data.repository.CrudRepository;
+
 import br.com.algafood.model.Cozinha;
 
-public interface CozinhaRepository {
+public interface CozinhaRepository extends CrudRepository<Cozinha, Long> {
 	
-	List<Cozinha> listar();
-	
-	public Cozinha buscarPorId(Long id);
-	void deletar(Long id);
-	public Cozinha cozinhaSalva(Cozinha cozinha);
+
 
 }

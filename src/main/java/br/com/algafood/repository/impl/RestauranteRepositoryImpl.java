@@ -11,34 +11,13 @@ import br.com.algafood.model.Restaurante;
 import br.com.algafood.repository.RestauranteRepository;
 
 @Repository
-public class RestauranteRepositoryImpl implements RestauranteRepository{
+public class RestauranteRepositoryImpl{
 
 	
 	@Autowired
 	 private EntityManager manager;
 	
-	@Override
-	public List<Restaurante> listar() {
-		
-		return  manager.createQuery("from Restaurante", Restaurante.class).getResultList() ;
-	}
 
-	@Override
-	public void deletar(Long id) {
-		 manager.remove(id);
-		
-	}
-
-	@Override
-	public Restaurante salvar(Restaurante restaurante) {
-		return manager.merge(restaurante);
-	}
-
-	@Override
-	public Restaurante buscarPorId(Long id) {
-		return manager.find(Restaurante.class, id);
-	}
-	
 	
 
 }

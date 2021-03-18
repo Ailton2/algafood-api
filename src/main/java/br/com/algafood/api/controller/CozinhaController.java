@@ -32,8 +32,7 @@ public class CozinhaController {
 	@Autowired
 	private CozinhaService cozinhaService;
 	
-	@Autowired
-	private CozinhaRepository cozinhaRepository;
+
 	
 	@GetMapping
 	public List<Cozinha> listar(){

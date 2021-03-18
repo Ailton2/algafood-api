@@ -2,16 +2,12 @@ package br.com.algafood.repository;
 
 import java.util.List;
 
+import org.springframework.data.repository.CrudRepository;
+
 import br.com.algafood.model.Estado;
 
-public interface EstadoRepository {
+public interface EstadoRepository extends CrudRepository<Estado, Long> {
 	
-	List<Estado> listar();
-	
-	public void deletar(Long id);
-	
-	public Estado buscarporId(Long id);
-	
-	public Estado salvar(Estado estado);
+
 
 }
