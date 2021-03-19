@@ -1,5 +1,6 @@
 package br.com.algafood.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,5 +58,33 @@ public class RestauranteService {
 
 	}
 
+	public List<Restaurante> buscarPorNome(String nome,Long id){
+		
+		return restauranteRepository.consultaPorNome(nome, id);
+		
+	}
+	
+	public List<Restaurante> Buscataxas(String nome,BigDecimal taxaFreteInicial,BigDecimal taxaFreteFinal){
+		
+		
+		return restauranteRepository.find(nome,taxaFreteInicial,taxaFreteFinal);
+		
+		
+	}
+	public List<Restaurante> Buscataxas2(String nome,BigDecimal taxaFreteInicial,BigDecimal taxaFreteFinal){
+		
+		
+		return restauranteRepository.find2(nome,taxaFreteInicial,taxaFreteFinal);
+		
+		
+	}
+	
+	public List<Restaurante> BuscataxasCriteria(String nome,BigDecimal taxaFreteInicial,BigDecimal taxaFreteFinal){
+		
+		
+		return restauranteRepository.findCriteria(nome, taxaFreteInicial, taxaFreteFinal);
+		
+		
+	}
 
 }

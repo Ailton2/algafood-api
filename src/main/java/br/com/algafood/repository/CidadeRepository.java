@@ -9,7 +9,5 @@ import br.com.algafood.model.Cidade;
 
 @Repository
 public interface CidadeRepository  extends CrudRepository<Cidade, Long> {
-	
-
 
 }

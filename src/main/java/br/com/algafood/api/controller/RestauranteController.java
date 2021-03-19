@@ -1,6 +1,8 @@
 package br.com.algafood.api.controller;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +18,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.algafood.model.Restaurante;
+import br.com.algafood.repository.RestauranteRepository;
+import br.com.algafood.repository.spec.RestauranteComFreteGratisSpec;
+import br.com.algafood.repository.spec.RestauranteComNomeSemelhanteSpec;
+import br.com.algafood.repository.spec.RestauranteSpecs;
 import br.com.algafood.service.RestauranteService;
+
+
 
 @RestController
 @RequestMapping("/restaurantes")
@@ -25,6 +33,10 @@ public class RestauranteController {
 	@Autowired
 	private RestauranteService restauranteService;
 	
+	@Autowired
+	private RestauranteRepository restauranteRepository;
+	
+
 	
 	@GetMapping
 	public List<?> listar(){
@@ -73,7 +85,60 @@ public class RestauranteController {
 		return ResponseEntity.ok(restaurante2);
 	}
 	
+	@GetMapping("/pornome")
+     public  List<Restaurante> buscarNome(String nome,Long id){
+    	 
+		List<Restaurante> restaurantes = restauranteService.buscarPorNome(nome, id);
+		
+		return restaurantes;
+		
+    	    
+     }
+	
+	@GetMapping("/pornome-e-frete")
+	public List<Restaurante> Buscataxas(String nome,BigDecimal taxaFreteInicial,BigDecimal taxaFreteFinal){
 	
 	
+		return  restauranteService.Buscataxas(nome, taxaFreteInicial, taxaFreteFinal); 
+		
+		
+	}
+	@GetMapping("/pornome-e-frete2")
+	public List<Restaurante> Buscataxas2(String nome,BigDecimal taxaFreteInicial,BigDecimal taxaFreteFinal){
+	
+	
+		return  restauranteService.Buscataxas2(nome, taxaFreteInicial, taxaFreteFinal); 
+		
+		
+	}
+	
+	@GetMapping("/pornome-e-freteCriteria")
+	public List<Restaurante> findtaxasCriteria(String nome,BigDecimal taxaFreteInicial,BigDecimal taxaFreteFinal){
+	
+	
+		return  restauranteService.BuscataxasCriteria(nome, taxaFreteInicial, taxaFreteFinal); 
+		
+		
+	}
+	
+	@GetMapping("/com-freteGratis")
+	public List<Restaurante> findFreteGratis(String nome){
+		
+	
+	//	RestauranteComFreteGratisSpec freteGratisSpec = new RestauranteComFreteGratisSpec();
+	//	RestauranteComNomeSemelhanteSpec semelhanteSpec = new RestauranteComNomeSemelhanteSpec(nome);
+		
+	
+		//return  restauranteRepository.findAll(semelhanteSpec.and(freteGratisSpec));
+		return restauranteRepository.findComFreteGratis(nome);
+		
+		
+	}
+	
+	@GetMapping("/primeiro")
+	public Optional<Restaurante> restaurantePrimeiro(){
+		
+		return restauranteRepository.buscarPrimeiro();
+	}
 
 }
