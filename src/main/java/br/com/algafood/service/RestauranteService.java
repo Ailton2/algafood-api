@@ -11,15 +11,24 @@ import org.springframework.stereotype.Service;
 
 import br.com.algafood.exception.EntidadeEmUsoException;
 import br.com.algafood.exception.EntidadeNaoEncontradaException;
+import br.com.algafood.exception.RestauranteNaoEncontradaException;
+import br.com.algafood.model.Cozinha;
 import br.com.algafood.model.Restaurante;
+import br.com.algafood.repository.CozinhaRepository;
 import br.com.algafood.repository.RestauranteRepository;
 
 @Service
 public class RestauranteService {
 	
 	
+	private static final String MSG_RESTAURANTE_ESTÁ_EM_USO = "Restaurante com o código %d está em uso ";
+
+	
 	@Autowired
 	private RestauranteRepository restauranteRepository;
+	
+	@Autowired
+	private CozinhaService cozinhaService;
 	
 	public List<Restaurante> listar(){
 		
@@ -30,9 +39,9 @@ public class RestauranteService {
 	
 	public Restaurante buscarPorId(Long id) {
 		
-		Optional<Restaurante> restaurante =	restauranteRepository.findById(id);
+		  return restauranteRepository.findById(id).orElseThrow(() -> new RestauranteNaoEncontradaException(id));
 		  
-		  return restaurante.get();
+		  
 			
 	}
 	
@@ -40,21 +49,27 @@ public class RestauranteService {
           try {
         	  restauranteRepository.deleteById(id);
   		} catch (EmptyResultDataAccessException e) {
-			throw new EntidadeNaoEncontradaException (
-				  String.format("Não existe cadastro de restaurante com o código %d ", id));
+			throw new RestauranteNaoEncontradaException(id);
 		 }catch (DataIntegrityViolationException e) {
 			
 		  throw new EntidadeEmUsoException(
-				  String.format("Restaurante com o código %d está em uso ", id));
+				  String.format(MSG_RESTAURANTE_ESTÁ_EM_USO, id));
 		}
 			
 
 	}
 	
 	public Restaurante salvar(Restaurante restaurante) {
+
+		Long idcozinha = restaurante.getCozinha().getId();
 		
-	
+		Cozinha cozinha = cozinhaService.BuscarOrFalhar(idcozinha);
+		
+		restaurante.setCozinha(cozinha);
+		
 		 return restauranteRepository.save(restaurante);
+		 
+		 
 
 	}
 
@@ -81,10 +96,8 @@ public class RestauranteService {
 	
 	public List<Restaurante> BuscataxasCriteria(String nome,BigDecimal taxaFreteInicial,BigDecimal taxaFreteFinal){
 		
-		
 		return restauranteRepository.findCriteria(nome, taxaFreteInicial, taxaFreteFinal);
-		
-		
+
 	}
 
 }

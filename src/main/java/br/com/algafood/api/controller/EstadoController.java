@@ -14,10 +14,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.algafood.exception.EntidadeEmUsoException;
-import br.com.algafood.exception.EntidadeNaoEncontradaException;
 import br.com.algafood.model.Estado;
 import br.com.algafood.service.EstadoService;
 
@@ -35,27 +34,23 @@ public class EstadoController {
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Estado> deletar(@PathVariable Long id) {
+	@ResponseStatus(value = HttpStatus.NO_CONTENT)
+	public void deletar(@PathVariable Long id) {
 
-		try {
+
 			estadoService.deletar(id);
-			return ResponseEntity.noContent().build();
-		} catch (EntidadeNaoEncontradaException e) {
-			return ResponseEntity.notFound().build();
-		}
+		
+
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Estado> buscarPorId(@PathVariable Long id){
+	public Estado buscarPorId(@PathVariable Long id){
 		
 		  Estado estado = estadoService.buscarPorId(id);
 		  
-		  if(estado != null) {
-			  return ResponseEntity.ok(estado);
-		  }
+
 		  
-		 return ResponseEntity.notFound().build();
-		
+		 return estado;
 	}
 	
 	@PostMapping
@@ -68,20 +63,15 @@ public class EstadoController {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Estado> atualizar(@PathVariable Long id,@RequestBody Estado estado){
+	public Estado atualizar(@PathVariable Long id,@RequestBody Estado estado){
 		
 		   Estado estadonovo = estadoService.buscarPorId(id);
 		   
-		   if(estadonovo != null) {
+            BeanUtils.copyProperties(estado, estadonovo,"id");
+			return   estadoService.salvar(estadonovo);
 			   
-			  // estadonovo.setNome(estado.getNome());
-			   BeanUtils.copyProperties(estado, estadonovo,"id");
-			   estadoService.salvar(estadonovo);
-			   return ResponseEntity.status(HttpStatus.CREATED).build();
-		   }
 		   
-		  return ResponseEntity.noContent().build();
-		
+
 	}
 
 }

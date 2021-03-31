@@ -32,6 +32,9 @@ public class CozinhaController {
 	@Autowired
 	private CozinhaService cozinhaService;
 	
+	@Autowired
+	private CozinhaRepository cozinhaRepository;
+	
 
 	
 	@GetMapping
@@ -42,13 +45,10 @@ public class CozinhaController {
 	}
 	
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Cozinha> buscarPorId(@PathVariable Long id) {
+	public Cozinha buscarPorId(@PathVariable Long id) {
 		
-		Cozinha cozinha = cozinhaService.BuscarporId(id);
-		if (cozinha != null) {
-			return ResponseEntity.ok(cozinha);
-		}
-	return ResponseEntity.notFound().build();	
+		return cozinhaService.BuscarOrFalhar(id);
+	
 		
 	}
 	
@@ -63,35 +63,28 @@ public class CozinhaController {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Cozinha> atualizar(@PathVariable Long id,@RequestBody Cozinha cozinha) {
+	public Cozinha atualizar(@PathVariable Long id,@RequestBody Cozinha cozinha) {
 		
 		
-		 Cozinha cozinhasalva = cozinhaService.BuscarporId(id);
-		 
-	
-		 
-		 if(cozinhasalva != null) {
+		 Cozinha cozinhasalva = cozinhaService.BuscarOrFalhar(id);
+
 			 BeanUtils.copyProperties(cozinha, cozinhasalva,"id");
 			 
-			 cozinhaService.salvar(cozinhasalva);
-			 return ResponseEntity.ok(cozinhasalva); 
-		 }
-		return ResponseEntity.noContent().build();
+			 return	 cozinhaService.salvar(cozinhasalva);
+			
+		 
+		
 	}
 
+
+	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Cozinha> deletar(@PathVariable Long id){
-		try {
-	   
+	@ResponseStatus(value = HttpStatus.NO_CONTENT)
+	public void deletar(@PathVariable Long id){
+
 		  		cozinhaService.deletar(id);
-				
-				return ResponseEntity.noContent().build();
-		  	
-		}catch(EntidadeNaoEncontradaException e){
-			return ResponseEntity.notFound().build();
-		} catch (EntidadeEmUsoException e) {
-			return ResponseEntity.status(HttpStatus.CONFLICT).build();
-		}
+
+
 	
 	}
 }

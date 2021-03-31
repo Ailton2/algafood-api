@@ -4,10 +4,13 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,8 +18,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.algafood.exception.CozinhaNaoEncontradaException;
+import br.com.algafood.exception.EntidadeNaoEncontradaException;
+import br.com.algafood.exception.NegocioException;
 import br.com.algafood.model.Restaurante;
 import br.com.algafood.repository.RestauranteRepository;
 import br.com.algafood.repository.spec.RestauranteComFreteGratisSpec;
@@ -39,7 +46,7 @@ public class RestauranteController {
 
 	
 	@GetMapping
-	public List<?> listar(){
+	public List<Restaurante> listar(){
 		List<Restaurante> restaurantes = restauranteService.listar(); 
 		
 		return restaurantes;
@@ -47,43 +54,54 @@ public class RestauranteController {
 	
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<?> buscarPorId(@PathVariable Long id){
+	public Restaurante buscarPorId(@PathVariable Long id){
 		
-		Restaurante restaurante = restauranteService.buscarPorId(id);
+		return restauranteService.buscarPorId(id);
 		
-		return ResponseEntity.ok(restaurante);
+		
 	}
 	
 	@PostMapping
-	public ResponseEntity<Restaurante> salvar(@RequestBody Restaurante restaurante){
+	public Restaurante salvar(@RequestBody @Valid Restaurante restaurante){
 		
-		 restauranteService.salvar(restaurante);
+		
+		try {
+			return restauranteService.salvar(restaurante);
+		} catch (CozinhaNaoEncontradaException e) {
+			throw new NegocioException(e.getMessage(),e);
+		}
+		
 		 
-		 return ResponseEntity.status(HttpStatus.CREATED).build();
+	
 		
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> deletarPorId(@PathVariable Long id){
+	@ResponseStatus(value = HttpStatus.NO_CONTENT)
+	public void deletarPorId(@PathVariable Long id){
 		
-		if(id != null) {
+		
 			restauranteService.deletar(id);
 			
-			  return ResponseEntity.noContent().build();
-		}
-
-		return ResponseEntity.notFound().build();
+		
 		
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Restaurante> atualizar(@PathVariable Long id,@RequestBody Restaurante restaurante){
+	public Restaurante atualizar(@PathVariable Long id,@RequestBody Restaurante restaurante){
 		Restaurante restaurante2 = restauranteService.buscarPorId(id);
 		
-		BeanUtils.copyProperties(restaurante, restaurante2,"id");
+		BeanUtils.copyProperties(restaurante, restaurante2,"id","formaPagamentos","endereco","dataCadastro");
+		try {
+			return restauranteService.salvar(restaurante2);
+		} catch (CozinhaNaoEncontradaException e) {
+			throw new NegocioException(e.getMessage(),e);
+		}
 		
-		return ResponseEntity.ok(restaurante2);
 	}
+	
+	
+	
 	
 	@GetMapping("/pornome")
      public  List<Restaurante> buscarNome(String nome,Long id){
@@ -123,13 +141,7 @@ public class RestauranteController {
 	
 	@GetMapping("/com-freteGratis")
 	public List<Restaurante> findFreteGratis(String nome){
-		
-	
-	//	RestauranteComFreteGratisSpec freteGratisSpec = new RestauranteComFreteGratisSpec();
-	//	RestauranteComNomeSemelhanteSpec semelhanteSpec = new RestauranteComNomeSemelhanteSpec(nome);
-		
-	
-		//return  restauranteRepository.findAll(semelhanteSpec.and(freteGratisSpec));
+
 		return restauranteRepository.findComFreteGratis(nome);
 		
 		
