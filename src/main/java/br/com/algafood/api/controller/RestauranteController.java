@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.algafood.Groups;
 import br.com.algafood.exception.CozinhaNaoEncontradaException;
 import br.com.algafood.exception.EntidadeNaoEncontradaException;
 import br.com.algafood.exception.NegocioException;
@@ -68,7 +69,7 @@ public class RestauranteController {
 		try {
 			return restauranteService.salvar(restaurante);
 		} catch (CozinhaNaoEncontradaException e) {
-			throw new NegocioException(e.getMessage(),e);
+			throw new NegocioException(e.getMessage());
 		}
 		
 		 
@@ -88,7 +89,7 @@ public class RestauranteController {
 	}
 	
 	@PutMapping("/{id}")
-	public Restaurante atualizar(@PathVariable Long id,@RequestBody Restaurante restaurante){
+	public Restaurante atualizar(@PathVariable Long id,@Valid @RequestBody Restaurante restaurante){
 		Restaurante restaurante2 = restauranteService.buscarPorId(id);
 		
 		BeanUtils.copyProperties(restaurante, restaurante2,"id","formaPagamentos","endereco","dataCadastro");

@@ -2,6 +2,8 @@ package br.com.algafood.api.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -60,7 +62,7 @@ public class CidadeController {
 	
 	@PostMapping
 	@ResponseStatus(value = HttpStatus.CREATED)
-	public Cidade salvar(@RequestBody Cidade cidade){
+	public Cidade salvar(@RequestBody @Valid Cidade cidade){
 		
 		
             try {
@@ -73,7 +75,7 @@ public class CidadeController {
 	}
 	
 	@PutMapping("/{id}")
-	public Cidade atualizar(@RequestBody Cidade cidade,@PathVariable Long id){
+	public Cidade atualizar(@RequestBody Cidade cidade,@Valid @PathVariable Long id){
 		
 		
 			  Cidade cidadeAtual = cidadeService.BuscarPorId(id);
