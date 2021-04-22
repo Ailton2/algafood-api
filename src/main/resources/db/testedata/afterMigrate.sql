@@ -41,10 +41,10 @@ insert into cidade(nome,estado_id) values('Fortaleza',1);
 insert into cidade(nome,estado_id) values('Salvador',2);
 
 
-insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro,data_atualizacao,endereco_cep,endereco_bairro,endereco_logradouro,endereco_cidade_id,endereco_numero,endereco_complemento) values (1,'restNovo',10,1,utc_timestamp,utc_timestamp,'61700000','Serpa','Rua Luiz',1,'123','nunhum');
-insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro,data_atualizacao) values (2,'restCidade',20,3,utc_timestamp,utc_timestamp);
-insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro,data_atualizacao) values (3,'restSaude',30,3,utc_timestamp,utc_timestamp);
-insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro,data_atualizacao) values (4,'restGratis',0,3,utc_timestamp,utc_timestamp);
+insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro,data_atualizacao,endereco_cep,endereco_bairro,endereco_logradouro,endereco_cidade_id,endereco_numero,endereco_complemento) values (1,'restNovo',10,1,current_timestamp,current_timestamp,'61700000','Serpa','Rua Luiz',1,'123','nunhum');
+insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro,data_atualizacao) values (2,'restCidade',20,3,current_timestamp,current_timestamp);
+insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro,data_atualizacao) values (3,'restSaude',30,3,current_timestamp,current_timestamp);
+insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro,data_atualizacao) values (4,'restGratis',0,3,current_timestamp,current_timestamp);
 
 insert into produto(id,nome,descricao,preco,ativo,restaurante_id) values(1,'Baiao','Baiao',10,true,2);
 
@@ -55,7 +55,7 @@ insert into forma_pagamento(id,descricao) values(3,'dinheiro');
 insert into restaurante_forma_pagamento(restaurante_id,forma_pagamento_id) values (1,1),(1,2),(2,1);
 
 
-insert into usuario(id,nome,email,senha,data_cadastro) values(1,'Ailton','tym@wefe','123',utc_timestamp);
+insert into usuario(id,nome,email,senha,data_cadastro) values(1,'Ailton','tym@wefe','123',current_timestamp);
 
 insert into grupo(id,nome) values(1,'ADMIN');
 insert into grupo(id,nome) values(2,'USER');

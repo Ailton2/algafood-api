@@ -3,6 +3,7 @@ package br.com.algafood.api.controller;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -22,9 +23,15 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.algafood.Groups;
+import br.com.algafood.converterDTO.RestauranteConverterDTO;
+import br.com.algafood.desconverterDTO.RestauranteDesconverte;
+import br.com.algafood.dto.CozinhaDTO;
+import br.com.algafood.dto.RestauranteDTO;
+import br.com.algafood.dto.RestauranteInput;
 import br.com.algafood.exception.CozinhaNaoEncontradaException;
 import br.com.algafood.exception.EntidadeNaoEncontradaException;
 import br.com.algafood.exception.NegocioException;
+import br.com.algafood.model.Cozinha;
 import br.com.algafood.model.Restaurante;
 import br.com.algafood.repository.RestauranteRepository;
 import br.com.algafood.repository.spec.RestauranteComFreteGratisSpec;
@@ -37,6 +44,9 @@ import br.com.algafood.service.RestauranteService;
 @RestController
 @RequestMapping("/restaurantes")
 public class RestauranteController {
+	
+	@Autowired
+	private RestauranteConverterDTO converterDTO;
 
 	@Autowired
 	private RestauranteService restauranteService;
@@ -44,30 +54,38 @@ public class RestauranteController {
 	@Autowired
 	private RestauranteRepository restauranteRepository;
 	
+	@Autowired
+	private RestauranteDesconverte desconverte;
 
 	
 	@GetMapping
-	public List<Restaurante> listar(){
-		List<Restaurante> restaurantes = restauranteService.listar(); 
+	public List<RestauranteDTO> listar(){
+		return converterDTO.toList(restauranteRepository.findAll());
 		
-		return restaurantes;
+
 	}
 	
 	
 	@GetMapping("/{id}")
-	public Restaurante buscarPorId(@PathVariable Long id){
+	public RestauranteDTO buscarPorId(@PathVariable Long id){
 		
-		return restauranteService.buscarPorId(id);
+		Restaurante restaurante = restauranteService.buscarPorId(id);
+		
+		return converterDTO.toModel(restaurante);
 		
 		
 	}
+
+
 	
 	@PostMapping
-	public Restaurante salvar(@RequestBody @Valid Restaurante restaurante){
+	public RestauranteDTO salvar(@RequestBody @Valid RestauranteInput restauranteInput){
 		
 		
 		try {
-			return restauranteService.salvar(restaurante);
+			  Restaurante restaurante = desconverte.paraDomainObject(restauranteInput);
+			
+			return converterDTO.toModel(restauranteService.salvar(restaurante));
 		} catch (CozinhaNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage());
 		}
@@ -89,12 +107,14 @@ public class RestauranteController {
 	}
 	
 	@PutMapping("/{id}")
-	public Restaurante atualizar(@PathVariable Long id,@Valid @RequestBody Restaurante restaurante){
+	public RestauranteDTO atualizar(@PathVariable Long id,@Valid @RequestBody RestauranteInput restauranteInput){
 		Restaurante restaurante2 = restauranteService.buscarPorId(id);
+		
+		Restaurante restaurante = desconverte.paraDomainObject(restauranteInput);
 		
 		BeanUtils.copyProperties(restaurante, restaurante2,"id","formaPagamentos","endereco","dataCadastro");
 		try {
-			return restauranteService.salvar(restaurante2);
+			return converterDTO.toModel(restauranteService.salvar(restaurante2));
 		} catch (CozinhaNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage(),e);
 		}
@@ -153,5 +173,7 @@ public class RestauranteController {
 		
 		return restauranteRepository.buscarPrimeiro();
 	}
+
+	
 
 }

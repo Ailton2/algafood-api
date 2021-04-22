@@ -53,7 +53,7 @@ public class RestauranteRepositoryImpl implements RestauranteRepositoryQueries{
 		
      StringBuilder jpql = new StringBuilder();
   	jpql.append( " from Restaurante where 0 = 0 ");
-    var	parametros = new HashMap<String,Object>();
+    HashMap<String, Object>	parametros = new HashMap<String,Object>();
   	
   	if(StringUtils.hasLength(nome)) {
   		jpql.append( " and nome like :nome ");

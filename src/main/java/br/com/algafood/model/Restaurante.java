@@ -3,6 +3,7 @@ package br.com.algafood.model;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +31,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sun.istack.NotNull;
 
 import br.com.algafood.Groups;
@@ -57,6 +59,7 @@ public class Restaurante {
 
 	//@JsonIgnore
 	
+	@JsonIgnoreProperties(value =  "nome",allowGetters = true)
 	@Valid
 	@javax.validation.constraints.NotNull
 	@ConvertGroup(from =  Default.class,to = Groups.CozinhaId.class)
@@ -68,15 +71,15 @@ public class Restaurante {
 	@Embedded
 	private Endereco endereco;
 	
-	 @JsonIgnore
+	// @JsonIgnore
 	 @CreationTimestamp
 	 @Column(nullable = false)
-     private LocalDate dataCadastro;
+     private OffsetDateTime dataCadastro;
 	
-	 @JsonIgnore
+	//@JsonIgnore
 	@UpdateTimestamp
 	@Column(nullable = false)
-	private LocalDate dataAtualizacao;
+	private OffsetDateTime dataAtualizacao;
 	
 	@JsonIgnore
 	@ManyToMany
